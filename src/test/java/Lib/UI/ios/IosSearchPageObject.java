@@ -3,6 +3,7 @@ package Lib.UI.ios;
 import Lib.UI.SearchPageObject;
 import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.By;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class IosSearchPageObject extends SearchPageObject {
     static {
@@ -12,9 +13,7 @@ public class IosSearchPageObject extends SearchPageObject {
         element_close_search_btn = By.id("Close");
     }
 
-
-
-    public IosSearchPageObject(AppiumDriver driver) {
+    public IosSearchPageObject(RemoteWebDriver driver) {
         super(driver);
     }
 }

@@ -3,6 +3,7 @@ package Lib.UI.android;
 import Lib.UI.NavigationUI;
 import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.By;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class AndroidNavigationUi extends NavigationUI {
     static {
@@ -10,7 +11,7 @@ public class AndroidNavigationUi extends NavigationUI {
          element_reading_lists_container = By.id("org.wikipedia:id/reading_list_list");
     }
 
-    public AndroidNavigationUi(AppiumDriver driver) {
+    public AndroidNavigationUi(RemoteWebDriver driver) {
         super(driver);
     }
 }

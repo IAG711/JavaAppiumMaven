@@ -4,6 +4,7 @@ import Lib.Platform;
 import io.appium.java_client.AppiumDriver;
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 abstract public class ArticlePageObject extends MainPageObject{
     protected static By
@@ -18,7 +19,7 @@ abstract public class ArticlePageObject extends MainPageObject{
     element_authorization_popup_close,
     element_remove_from_reading_list;
 
-    public ArticlePageObject(AppiumDriver driver) {
+    public ArticlePageObject(RemoteWebDriver driver) {
         super(driver);
     }
 

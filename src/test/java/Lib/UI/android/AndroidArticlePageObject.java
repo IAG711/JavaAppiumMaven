@@ -3,6 +3,7 @@ package Lib.UI.android;
 import Lib.UI.ArticlePageObject;
 import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.By;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class AndroidArticlePageObject extends ArticlePageObject {
     static {
@@ -15,7 +16,7 @@ public class AndroidArticlePageObject extends ArticlePageObject {
         element_cross_btn = By.xpath("*//android.widget.ImageButton[@content-desc='Navigate up']");
     }
 
-    public AndroidArticlePageObject(AppiumDriver driver) {
+    public AndroidArticlePageObject(RemoteWebDriver driver) {
         super(driver);
     }
 }

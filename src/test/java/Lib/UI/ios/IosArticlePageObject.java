@@ -3,6 +3,7 @@ package Lib.UI.ios;
 import Lib.UI.ArticlePageObject;
 import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.By;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class IosArticlePageObject extends ArticlePageObject {
     static {
@@ -15,7 +16,7 @@ public class IosArticlePageObject extends ArticlePageObject {
         element_remove_from_reading_list = By.id("Saved. Activate to unsave.");
     }
 
-    public IosArticlePageObject(AppiumDriver driver) {
+    public IosArticlePageObject(RemoteWebDriver driver) {
         super(driver);
     }
 }

@@ -3,6 +3,7 @@ package Lib.UI.android;
 import Lib.UI.SearchPageObject;
 import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.By;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class AndroidSearchPageObject extends SearchPageObject {
 static {
@@ -12,7 +13,7 @@ static {
     element_close_search_btn = By.id("org.wikipedia:id/search_close_btn");
 }
 
-    public AndroidSearchPageObject(AppiumDriver driver) {
+    public AndroidSearchPageObject(RemoteWebDriver driver) {
         super(driver);
     }
 

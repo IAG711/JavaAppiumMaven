@@ -145,4 +145,29 @@ public class MainPageObject {
         WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
         return element.getAttribute(attribute);
     }
+
+    public void tryClickElementWithFewAttempts(By by, String error_message, int amount_of_attempts) {
+        int current_attemps = 0;
+        boolean need_more_attempts = true;
+
+        while (need_more_attempts) {
+            try {
+                this.waitForElementAndClick(by, error_message, 5);
+                need_more_attempts = false;
+            } catch (Exception e) {
+                if (current_attemps > amount_of_attempts) {
+                    this.waitForElementAndClick(by, error_message, 5);
+                }
+            }
+            ++ current_attemps;
+        }
+    }
+
+    public WebElement waitForElementToBeClickableAndClick(By by, String error_message, long timeoutInSeconds){
+        WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
+        wait.withMessage(error_message + "\n");
+        WebElement element = wait.until(ExpectedConditions.elementToBeClickable(by));
+        element.click();
+        return element;
+    }
 }

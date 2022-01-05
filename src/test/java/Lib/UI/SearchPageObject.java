@@ -42,9 +42,10 @@ abstract public class SearchPageObject extends MainPageObject {
     public void openArticle(String article_name){
         if (Platform.getInstance().isAndroid()) {
             this.waitForElementAndClick(By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='" + article_name + "']"), "Cannot locate search result with title " + article_name, 5);
-        } else{
+        } else if (Platform.getInstance().isIos()){
             this.waitForElementAndClick(By.xpath("//XCUIElementTypeStaticText[@name='" + article_name + "']"), "Cannot locate search result with title " + article_name, 5);
-        }
+        } else this.waitForElementAndClick(By.cssSelector("li[title='" + article_name + "']"), "Cannot locate search result with title " + article_name, 5);
+
     }
 
     public void closeSearchResults() {

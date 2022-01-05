@@ -2,14 +2,11 @@ package Tests;
 
 import Lib.CoreTestCase;
 import Lib.Platform;
-import Lib.UI.ArticlePageObject;
+import Lib.UI.*;
 import Lib.UI.Factories.ArticlePageObjectFactory;
 import Lib.UI.Factories.MyListsPageObjectFactory;
 import Lib.UI.Factories.NavigationUiFactory;
 import Lib.UI.Factories.SearchPageObjectFactory;
-import Lib.UI.MyListsPageObject;
-import Lib.UI.NavigationUI;
-import Lib.UI.SearchPageObject;
 import org.junit.Test;
 
 public class ArticleTests extends CoreTestCase {
@@ -21,6 +18,8 @@ public class ArticleTests extends CoreTestCase {
         String search_query = "Russia";
         String first_article = "Russia";
         String second_article = "Russian language";
+        String login = "naxape3058";
+        String password = "qwert12345qwert";
 
         SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
         ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
@@ -34,14 +33,21 @@ public class ArticleTests extends CoreTestCase {
         if (Platform.getInstance().isAndroid()) {
             ArticlePageObject.waitForArticleTitleToAppear();
             ArticlePageObject.createReadingListAndAddArticle(reading_folder_name);
-        } else {
+        } else if (Platform.getInstance().isIos()){
             ArticlePageObject.articleAddToReadingListClick();
             ArticlePageObject.closeAuthorizationModal();
+        } else {
+            ArticlePageObject.articleAddToReadingListClick();
+        };
+
+        if (Platform.getInstance().isMW()){
+            AuthorizationPageObject AuthorizationPageObject = new AuthorizationPageObject(driver);
+            AuthorizationPageObject.mwAuthorizationFromArticlePage(login, password);
         }
 
         ArticlePageObject.articleSearchBtnClick();
 
-        if (Platform.getInstance().isAndroid()) {
+        if (Platform.getInstance().isAndroid() || Platform.getInstance().isMW()) {
             SearchPageObject.insertSearchQuery(search_query);
         }
         SearchPageObject.openArticle(second_article);
@@ -49,10 +55,16 @@ public class ArticleTests extends CoreTestCase {
         if (Platform.getInstance().isAndroid()) {
             ArticlePageObject.waitForArticleTitleToAppear();
             ArticlePageObject.addArticleIntoReadingList(reading_folder_name);
-        } else ArticlePageObject.articleAddToReadingListClick();
+        } else {
+            ArticlePageObject.articleAddToReadingListClick();
+        };
 
-        ArticlePageObject.closeArticle();
+        if (!Platform.getInstance().isMW()){
+            ArticlePageObject.closeArticle();
+        }
+
         NavigationUI.openReadingListsScreen();
+
         if (Platform.getInstance().isAndroid()) {
             MyListsPageObject.openReadingList(reading_folder_name);
         }
@@ -63,25 +75,25 @@ public class ArticleTests extends CoreTestCase {
         if (Platform.getInstance().isAndroid()) {
             ArticlePageObject.waitForArticleTitleToAppear();
             ArticlePageObject.assertThatArticleHaveCorrectTitle(first_article);
-        } else {
-            //Часть задания про "придумать другой способ проверки, исключив проверку title". В голову пришел только такой вариант:
-            //Проверка, по сути, состоит из двух "шагов": Первый выполняется когда мы открываем саму статью (если её не останется в списке после удаления - она не откроется)
-            //Второй сделан тут: идет проверка, что после открытия статьи, в ней есть элемент удаления из списка чтения
-            //т.е. если открывшаяся в тесте статья не была в списке сохраненных - будет ошибка
+        } else if (Platform.getInstance().isIos()){
             ArticlePageObject.assertThatArticleIsSaved();
+        } else {
+            //Добавил новую функцию для проверки, что зашли в нужную статью: в википедии заголовок статьи является частью url
+            //поэтому после перехода в статью забираем урлу и проверяем, что нужное слово в ней встречается
+            ArticlePageObject.checkArticleUrl(first_article);
         }
     }
 
     //EX.6
-//    @Test
-//    public void testAssertThatElementIsPresent(){
-//        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
-//        ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
-//
-//        SearchPageObject.initSearchInput();
-//        SearchPageObject.insertSearchQuery("Russia");
-//        SearchPageObject.openArticle("Russia");
-//        ArticlePageObject.assertTitleElementPresent();
-//    }
+    @Test
+    public void testAssertThatElementIsPresent(){
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
+        ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
+
+        SearchPageObject.initSearchInput();
+        SearchPageObject.insertSearchQuery("Russia");
+        SearchPageObject.openArticle("Russia");
+        ArticlePageObject.assertTitleElementPresent();
+    }
 
 }

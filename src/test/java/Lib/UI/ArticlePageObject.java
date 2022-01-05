@@ -1,7 +1,6 @@
 package Lib.UI;
 
 import Lib.Platform;
-import io.appium.java_client.AppiumDriver;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -28,6 +27,9 @@ abstract public class ArticlePageObject extends MainPageObject{
     }
 
     public void articleAddToReadingListClick(){
+        if (Platform.getInstance().isMW()){
+           this.mwRemoveArticleFromSavedIfItThere();
+        }
         this.waitForElementAndClick(element_add_to_reading_list, "Cannot locate more options button", 15);
     }
 
@@ -85,6 +87,19 @@ abstract public class ArticlePageObject extends MainPageObject{
 
     public void assertThatArticleIsSaved() {
         this.waitForElementPresent(element_remove_from_reading_list, "Article is not marked as saved", 5);
+    }
+
+    public void mwRemoveArticleFromSavedIfItThere(){
+       if (getAmountOfElements(element_remove_from_reading_list) > 0){
+           this.waitForElementAndClick(element_remove_from_reading_list, "Cannot click remove from reading list button",3);
+           this.waitForElementPresent(element_add_to_reading_list, "Cannot locate add to reading list button after article was deleted from it", 2);
+       }
+    }
+
+    public void checkArticleUrl(String expected_value){
+        String article_url = driver.getCurrentUrl();
+        System.out.println(article_url);
+        Assert.assertTrue("URL of the opened page seems to be different from what was expected: " + article_url, article_url.contains(expected_value));
     }
 
 

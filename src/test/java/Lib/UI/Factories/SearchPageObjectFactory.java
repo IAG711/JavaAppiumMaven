@@ -13,11 +13,11 @@ public class SearchPageObjectFactory {
     {
         if (Platform.getInstance().isAndroid()){
             return new AndroidSearchPageObject(driver);
-        } else if (Platform.getInstance().isMW()){
-            return new MWSearchPageObject(driver);
+        } else if (Platform.getInstance().isIos()){
+            return new IosSearchPageObject(driver);
         }
         else {
-            return new IosSearchPageObject(driver);
+            return new MWSearchPageObject(driver);
         }
     }
 }

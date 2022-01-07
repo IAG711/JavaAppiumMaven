@@ -7,12 +7,20 @@ import Lib.UI.Factories.ArticlePageObjectFactory;
 import Lib.UI.Factories.MyListsPageObjectFactory;
 import Lib.UI.Factories.NavigationUiFactory;
 import Lib.UI.Factories.SearchPageObjectFactory;
+import io.qameta.allure.*;
+import io.qameta.allure.junit4.DisplayName;
 import org.junit.Test;
 
+@Epic("Test for articles")
 public class ArticleTests extends CoreTestCase {
 
     //EX.5
     @Test
+    @Features(value = {@Feature(value="Search"),@Feature(value="Article"),@Feature(value = "Navigation UI"),@Feature(value = "Saved article list")})
+    @DisplayName("Saving two articles in reading list")
+    @Description("Find two article, add both in reading list, and then delete one of them. Make sure other one is still in the list")
+    @Step("Starting test testSavingTwoArticles")
+    @Severity(value = SeverityLevel.NORMAL)
     public void testSavingTwoArticles(){
         String reading_folder_name = "Reading list";
         String search_query = "Russia";
@@ -78,14 +86,17 @@ public class ArticleTests extends CoreTestCase {
         } else if (Platform.getInstance().isIos()){
             ArticlePageObject.assertThatArticleIsSaved();
         } else {
-            //Добавил новую функцию для проверки, что зашли в нужную статью: в википедии заголовок статьи является частью url
-            //поэтому после перехода в статью забираем урлу и проверяем, что нужное слово в ней встречается
             ArticlePageObject.checkArticleUrl(first_article);
         }
     }
 
     //EX.6
     @Test
+    @Features(value = {@Feature(value="Search"),@Feature(value="Article")})
+    @DisplayName("Assert that title element is present")
+    @Description("Make sure that article has title element")
+    @Step("Starting test testAssertThatElementIsPresent")
+    @Severity(value = SeverityLevel.MINOR)
     public void testAssertThatElementIsPresent(){
         SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
         ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
@@ -94,6 +105,22 @@ public class ArticleTests extends CoreTestCase {
         SearchPageObject.insertSearchQuery("Russia");
         SearchPageObject.openArticle("Russia");
         ArticlePageObject.assertTitleElementPresent();
+    }
+
+    @Test
+    @Features(value = {@Feature(value="Search")})
+    @DisplayName("Compare article title with expected one")
+    @Description("Make sure that article has correct text in a tittle element")
+    @Step("Starting test testCompareArticleTitle")
+    @Severity(value = SeverityLevel.NORMAL)
+    public void testCompareArticleTitle(){
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
+        ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
+
+        SearchPageObject.initSearchInput();
+        SearchPageObject.insertSearchQuery("Russia");
+        SearchPageObject.openArticle("Russia");
+        ArticlePageObject.assertThatArticleHaveCorrectTitle("Russia");
     }
 
 }

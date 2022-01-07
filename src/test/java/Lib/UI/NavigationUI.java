@@ -1,6 +1,7 @@
 package Lib.UI;
 
 import Lib.Platform;
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -16,6 +17,7 @@ abstract public class NavigationUI extends MainPageObject{
         super(driver);
     }
 
+    @Step("Opening list of saved articles")
     public void openReadingListsScreen(){
         if (Platform.getInstance().isIos() || Platform.getInstance().isAndroid()) {
             this.waitForElementAndClick(element_open_reading_list_screen_btn, "Cannot locate reading list button on main screen", 15);
